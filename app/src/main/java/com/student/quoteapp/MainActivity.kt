@@ -38,7 +38,7 @@ object QuoteList {
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val quoteViewModel: QuoteViewModel by viewModels{ QuoteViewModelFactory((application as MainApp).repository) }
-    private var theList = ArrayList<Quote>()
+    lateinit var vpAdapter:CarouselAdapter
     lateinit var dialog: Dialog
     lateinit var dialogLayoutBinding: DialogLayoutBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,9 +48,10 @@ class MainActivity : AppCompatActivity() {
         makeFullScreen(binding.root)
         val cardFlipPageTransformer = CardFlipPageTransformer2()
         dialog = Dialog(this, android.R.style.Theme_Dialog)
-        val vpAdapter = CarouselAdapter( binding.vp, object: ClickEvents{
+        vpAdapter = CarouselAdapter( binding.vp, object: ClickEvents{
             override fun likeEventListener(quote: Quote) {
                 quoteViewModel.insertQuote(quote)
+
             }
         })
         binding.vp.apply {
@@ -76,7 +77,6 @@ class MainActivity : AppCompatActivity() {
         val back = ColorDrawable(Color.TRANSPARENT)
         val inset = InsetDrawable(back, 70)
         dialog.apply {
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(dialogLayoutBinding.root)
             dialog.setCanceledOnTouchOutside(true)
             dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)

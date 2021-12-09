@@ -38,7 +38,6 @@ class CarouselAdapter( var viewPager2: ViewPager2, var clickEvents: ClickEvents)
 
         }
     }
-    @SuppressLint("NotifyDataSetChanged")
     fun submitList(list: List<Quote>,){
         innerList.clear()
         innerList.addAll(list)
